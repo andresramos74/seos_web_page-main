@@ -1,7 +1,7 @@
 export const METHODS_OF_SAVING = {
   SOLAR: "Sistema de ahorro",
   SYSTEM_SUPPORT: "Sistema de respaldo",
-  SUPPORT_SOLAR: "Sistema de combinado (ahorro + respaldo)"
+  SUPPORT_SOLAR: "Sistema combinado (ahorro + respaldo)"
 }
 
 export const WARNINGS = {
