@@ -1,6 +1,7 @@
 import { useState, startTransition, useEffect } from 'react'
 import { METHODS_OF_SAVING, PRICE_KWH, PROJECT_COST, VALUES_RADIATION } from "helpers/texts"
 import Script from 'next/script'
+import { TYPES_FORM_SAVING } from 'actions/formSavingActions'
 
 const getwattage = (selectedMethod, informationLead) => {
 
@@ -51,10 +52,12 @@ const getProjectCost = (selectedMethod, wattage) => {
   //* Get the cost of the project
   const costProject = PROJECT_COST.filter(costPertWattage => costPertWattage.wattage === entireWattage)
 
-  return Math.ceil(costProject[0].value / 100000) * 100000
-
-
-
+  //if (  ) {
+    return Math.ceil(costProject[0].value2 / 100000) * 100000
+  //} else {
+  //  return Math.ceil(costProject[0].value / 100000) * 100000
+  //}
+  
 }
 
 const getSaving = (wattageToDisplay, informationLead) => {
@@ -287,8 +290,9 @@ const InformationSaving = ({ informationLead, selectedMethod, buttonZendesk, set
             </li>
           </ul>
         }
+        <p className='px-4 py-2'>Estos valores son de referencia y podrán variar con base en la visita técnica que se realizará como parte del proyecto</p>
       </section>
-
+      
       <div className='flex justify-center pt-2 pb-4'>
         <button
           className='transition mt-2 px-2 py-1 text-white bg-seos-blue-light hover:bg-seos-blue-dark hover:text-white rounded-md'

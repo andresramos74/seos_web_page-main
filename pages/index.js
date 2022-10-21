@@ -11,7 +11,7 @@ export default function Home() {
       </Head>
 
       <main className="text-red-500">
-        Hola por favor ve a: localhost:3000/partners
+        Hola
       </main>
 
     </div>

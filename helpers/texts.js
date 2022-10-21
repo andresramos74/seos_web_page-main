@@ -1,20 +1,24 @@
 export const METHODS_OF_SAVING = {
   SOLAR: "Sistema de ahorro",
   SYSTEM_SUPPORT: "Sistema de respaldo",
-  SUPPORT_SOLAR: "Sistema combinado (ahorro + respaldo)"
+  SUPPORT_SOLAR: "Sistema ahorro y respaldo"
 }
 
 export const WARNINGS = {
   SOLAR: [
-    "Solo disponible para personas que son propietarias del predio en el que se va a instalar el sistema solar"
+    "Este sistema te va ahorrar hasta el 100% en el valor de tu factura.",
+    "Este sistema solo puede estar instalado en un predio que ya tenga el servicio de energía tradicional.",
+    "Ya que este sistema no tiene baterías no te podrá respaldar en el caso de una caída de la red eléctrica tradicional."
   ],
   SYSTEM_SUPPORT: [
-    "Esta solución es para evitar cortes en cargas críticas. ",
-    "No se recomienda utilizarlo en equipos de alto consumo energético.",
-
+    "Este sistema puede darte respaldo para toda tu vivienda.",
+    "Este no es un sistema de generación de energía solar, por lo que no genera un ahorro en tu factura.",
+    "No se recomienda usar Luziol® para equipos de gran consumo energético. Esto podría afectar negativamente el tiempo de respaldo ofrecido."
   ],
   SUPPORT_SOLAR: [
-    "Solo disponible para personas que son propietarias del predio en el que se va a instalar el sistema solar"
+    "Este sistema cuenta con paneles para generar energía y ahorrar hasta un 100% en tu factura.",
+    "El arreglo de baterías que lleva este sistema va a respaldar todo tu hogar en caso de un corte de energía.",
+    "Este sistema solo puede estar instalado en un predio que ya tenga el servicio de energía tradicional."
   ]
 }
 
@@ -41,16 +45,16 @@ export const PRICE_KWH = [
 ]
 
 export const PROJECT_COST = [
-  { wattage: 1, value: 12289200 },
-  { wattage: 2, value: 18653250 },
-  { wattage: 3, value: 23993200 },
-  { wattage: 4, value: 27598450 },
-  { wattage: 5, value: 34537250 },
-  { wattage: 6, value: 37202000 },
-  { wattage: 7, value: 41904500 },
-  { wattage: 8, value: 47850550 },
-  { wattage: 9, value: 52093250 },
-  { wattage: 10, value: 57869500 },
+  { wattage: 1, value: 12289200, value2: 13000000 },
+  { wattage: 2, value: 18653250, value2: 19720000 },
+  { wattage: 3, value: 23993200, value2: 23992002 },
+  { wattage: 4, value: 27598450, value2: 28136533 },
+  { wattage: 5, value: 34537250, value2: 30725943 },
+  { wattage: 6, value: 37202000, value2: 34924676 },
+  { wattage: 7, value: 41904500, value2: 40341791 },
+  { wattage: 8, value: 47850550, value2: 41029597 },
+  { wattage: 9, value: 52093250, value2: 41029597 },
+  { wattage: 10, value: 57869500, value2: 45800000 },
 ]
 
 export const VALUES_RADIATION = [

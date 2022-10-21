@@ -18,7 +18,7 @@ const SavingPanel = ({ goToForm, setGoToForm, selectedMethod }) => {
   return (
     <article className={`transition ${goToForm ? "block translate-x-0" : "translate-x-full hidden"} font-[Poppins] my-4`}>
       <div className="w-full" data-cy="method">
-        La solución que escogiste fue: {<p className='font-semibold inline'>{selectedMethod}</p>}. Recuerda que:
+        Escogiste un {<p className='font-semibold inline'>{selectedMethod}</p>}. Recuerda que:
       </div>
       <Warning selectedMethod={selectedMethod} />
       <p className='mt-4'>Por favor ayúdanos con algunos datos para poder identificar nuestra mejor solución para ti</p>

@@ -31,7 +31,7 @@ export const initialStateFormSaving = {
 }
 
 export function formSavingReducer(state, action) {
-  
+
   switch (action.type) {
     case (TYPES_FORM_SAVING.CHANGE_INVOICE_VALUE): {
 
