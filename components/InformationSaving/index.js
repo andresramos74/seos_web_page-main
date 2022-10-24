@@ -216,7 +216,8 @@ const InformationSaving = ({ informationLead, selectedMethod, buttonZendesk, set
         <div className='flex justify-center'>
           <button
             className='transition mt-2 px-2 py-1 text-white bg-seos-blue-light hover:bg-seos-blue-dark hover:text-white rounded-md'
-            onClick={openChatZendesk}
+            onclick={location.href='https://wa.me/message/FMCRWQOI6YUZK1'}
+            //onClick={openChatZendesk}
           >
             Contactate con nosotros
           </button>
@@ -296,7 +297,8 @@ const InformationSaving = ({ informationLead, selectedMethod, buttonZendesk, set
       <div className='flex justify-center pt-2 pb-4'>
         <button
           className='transition mt-2 px-2 py-1 text-white bg-seos-blue-light hover:bg-seos-blue-dark hover:text-white rounded-md'
-          onClick={openChatZendesk}
+          onclick={location.href='https://wa.me/message/FMCRWQOI6YUZK1'}
+          //onClick={openChatZendesk}
         >
           Contactate con nosotros
         </button>
