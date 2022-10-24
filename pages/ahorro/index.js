@@ -38,8 +38,6 @@ const Saving = () => {
       <style jsx>{`
         .banner_img {
           background-image: url("/banner_prueba.jpg") 
-
-
         }
       `}</style>
     </section>
@@ -47,7 +45,6 @@ const Saving = () => {
 }
 
 Saving.getLayout = (page) => {
-
   return (
     <LayoutPage>
       <Header />

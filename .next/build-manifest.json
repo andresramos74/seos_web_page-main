@@ -5,8 +5,8 @@
   "devFiles": [],
   "ampDevFiles": [],
   "lowPriorityFiles": [
-    "static/wmopHVDgMxOdlllrI0_nt/_buildManifest.js",
-    "static/wmopHVDgMxOdlllrI0_nt/_ssgManifest.js"
+    "static/lXBHlvVZj9Jw-PPFhGthd/_buildManifest.js",
+    "static/lXBHlvVZj9Jw-PPFhGthd/_ssgManifest.js"
   ],
   "rootMainFiles": [],
   "pages": {
@@ -21,7 +21,7 @@
       "static/chunks/webpack-ee7e63bc15b31913.js",
       "static/chunks/framework-7751730b10fa0f74.js",
       "static/chunks/main-e7a7892cb0edc024.js",
-      "static/css/92bddf106d50c530.css",
+      "static/css/655441890c8e318a.css",
       "static/chunks/pages/_app-c0248f26ed3d420f.js"
     ],
     "/_error": [
@@ -37,7 +37,7 @@
       "static/chunks/675-6a3a6cbf30c3a62a.js",
       "static/chunks/478-a377dbfbc6b3e29f.js",
       "static/chunks/91-ca0437e31e4ff5ea.js",
-      "static/chunks/pages/ahorro-a0e467aa53874076.js"
+      "static/chunks/pages/ahorro-2dbc6d0e9d50456d.js"
     ],
     "/authentication/[encryptedNit]": [
       "static/chunks/webpack-ee7e63bc15b31913.js",

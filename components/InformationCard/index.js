@@ -30,9 +30,8 @@ const InformationCard = ({ typeOfSaving, urlImage, setGoToForm, openModal, setSe
           layout='fill'
           objectFit='cover'
           priority={true}
-          
         />
-        <p className="absolute w-full top-[47%] text-center z-0 text-[#f8c301] text-lg font-bold">
+        <p className="absolute w-full top-[47%] text-center z-0 text-[#f8c301] text-3xl font-bold">
           {typeOfSaving}
         </p>
         <div className="div_info hidden sm:flex transition-opacity duration-300 absolute w-full h-full bg-black bg-opacity-60 opacity-0 rounded-md hover:opacity-100 z-10 cursor-pointer">

@@ -239,6 +239,7 @@ const FormSaving = ({ goToForm, selectedMethod, setInformationLead }) => {
         <label htmlFor='rural'>Vive en una zona rural:</label>
         <input
           type='checkbox'
+          id='rural'
           name='rural'
           value='Si'
           className='ml-2'

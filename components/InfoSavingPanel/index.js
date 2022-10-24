@@ -69,7 +69,7 @@ const InfoSavingPanel = ({ goToForm, setGoToForm, setSelectedMethod }) => {
         */
       }
       <p className="pt-4">{TEXT_ESP.AHORRO}</p>
-      <section className="flex flex-wrap justify-center items-center pt-2">
+      <section className="flex flex-wrap justify-center items-center pt-0">
         <InformationCard
           typeOfSaving={METHODS_OF_SAVING.SOLAR}
           urlImage={Cartagena}

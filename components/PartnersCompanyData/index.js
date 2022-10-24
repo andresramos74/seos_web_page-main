@@ -11,12 +11,9 @@ const PartnersCompanyData = ({ values, errors, touched, dispatch }) => {
   const { data, departments, municipalities, setMunicipalities } = useColombia()
 
   useEffect(() => {
-
     if (data === null) return
-
     const cities = generateMunicipalities(data)
     setMunicipalities(cities)
-
   }, [data])
 
   const updateFormValues = (value, name) => {
