@@ -53,10 +53,11 @@ const getProjectCost = (selectedMethod, wattage) => {
   const costProject = PROJECT_COST.filter(costPertWattage => costPertWattage.wattage === entireWattage)
   const cb =document.querySelector('#rural')
   //console.log(cb.checked);
-  if (cb.checked)
+  if (cb.checked) {
     return Math.ceil(costProject[0].value2 / 100000) * 100000
-  else
+  } else {
     return Math.ceil(costProject[0].value / 100000) * 100000  
+  }
 }
 
 const getSaving = (wattageToDisplay, informationLead) => {
