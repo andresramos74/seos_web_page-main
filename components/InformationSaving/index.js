@@ -1,5 +1,6 @@
 import { useState, startTransition, useEffect } from 'react'
 import { METHODS_OF_SAVING, PRICE_KWH, PROJECT_COST, VALUES_RADIATION } from "helpers/texts"
+import { FloatingWhatsApp } from 'react-floating-whatsapp'
 import Script from 'next/script'
 import { TYPES_FORM_SAVING } from 'actions/formSavingActions'
 
@@ -211,29 +212,27 @@ const InformationSaving = ({ informationLead, selectedMethod, buttonZendesk, set
   if (wattage > 10) {
     return (
       <article className='w-80 sm:w-[48%] md:px-8 ml-2 h-full py-4 border border-gray rounded-md shadow-md'>
-        La potencia de tu proyecto excede los 10 kWp, contáctate con uno de nuestros asesores
-
-        <div className='flex justify-center'>
-          <button
-            className='transition mt-2 px-2 py-1 text-white bg-seos-blue-light hover:bg-seos-blue-dark hover:text-white rounded-md'
-            onclick={location.href='https://wa.me/message/FMCRWQOI6YUZK1'}
-            //onClick={openChatZendesk}
-          >
-            Contactate con nosotros
-          </button>
+        La potencia de tu proyecto excede los 10 kW, contáctate con uno de nuestros asesores por medio del botón de WhatsApp a continuación.
+        <div className="App">
+          <FloatingWhatsApp
+            phoneNumber="+57 3103865380"
+            accountName="SEOS Energy"            
+            statusMessage="Responde típicamente en 10 minutos"
+            chatMessage="Hola, entendemos que la potencia de tu proyecto excede los 10 kW. Si deseas que nuestro equipo se ponga en contacto contigo, por favor proporcionanos tu nombre y correo electrónico"
+            placeholder="Escribe tu mensaje ..."
+            chatboxHeight
+            allowEsc
+            allowClickAway
+            notification
+            notificationSound            
+          />          
         </div>
-
-        {buttonZendesk &&
-          <Script id="ze-snippet" src="https://static.zdassets.com/ekr/snippet.js?key=d29e7764-d740-457b-9ec5-2fd81060e208" />
-        }
-
       </article>
     )
   }
 
   return (
     <article className='w-80 sm:w-[48%] h-full border  border-gray rounded-md shadow-md'>
-
       <p className='px-4 py-2'>Con tus datos obtuvimos:</p>
       <section className='w-full md:pl-12 md:pr-2 h-min'>
         {
@@ -291,22 +290,21 @@ const InformationSaving = ({ informationLead, selectedMethod, buttonZendesk, set
             </li>
           </ul>
         }
-        <p className='px-4 py-2'>Estos valores son de referencia y podrán variar con base en la visita técnica que se realizará como parte del proyecto</p>
+        <p className='px-4 py-2'>Estos valores son de referencia y podrán variar con base en la visita técnica que se realizará como parte del proyecto. contáctate con uno de nuestros asesores por medio del botón de WhatsApp a continuación.</p>
       </section>
-      
-      <div className='flex justify-center pt-2 pb-4'>
-        <button
-          className='transition mt-2 px-2 py-1 text-white bg-seos-blue-light hover:bg-seos-blue-dark hover:text-white rounded-md'
-          onclick={location.href='https://wa.me/message/FMCRWQOI6YUZK1'}
-          //onClick={openChatZendesk}
-        >
-          Contactate con nosotros
-        </button>
-      </div>
-
-      {buttonZendesk &&
-        <Script id="ze-snippet" src="https://static.zdassets.com/ekr/snippet.js?key=d29e7764-d740-457b-9ec5-2fd81060e208" />
-      }
+      <div className="App">
+          <FloatingWhatsApp
+            phoneNumber="+57 3103865380"
+            accountName="SEOS Energy"            
+            statusMessage="Responde típicamente en 10 minutos"
+            chatMessage="Hola, mi nombre es Andrés.  Por favor déjame tu consulta y te responderé en la mayor brevedad."
+            chatboxHeight
+            allowEsc
+            allowClickAway
+            notification
+            notificationSound            
+          />          
+        </div>
     </article>
   )
 
