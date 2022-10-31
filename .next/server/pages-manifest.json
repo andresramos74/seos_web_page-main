@@ -1,11 +1,11 @@
 {
   "/_app": "pages/_app.js",
+  "/_error": "pages/_error.js",
   "/_document": "pages/_document.js",
   "/api/hello": "pages/api/hello.js",
   "/authentication/[encryptedNit]": "pages/authentication/[encryptedNit].html",
   "/partners": "pages/partners.html",
   "/": "pages/index.html",
-  "/_error": "pages/_error.js",
   "/ahorro": "pages/ahorro.html",
   "/404": "pages/404.html"
 }

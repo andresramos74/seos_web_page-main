@@ -1,8 +1,5 @@
 import { useState, startTransition, useEffect } from 'react'
 import { METHODS_OF_SAVING, PRICE_KWH, PROJECT_COST, VALUES_RADIATION } from "helpers/texts"
-import { FloatingWhatsApp } from 'react-floating-whatsapp'
-import Script from 'next/script'
-import { TYPES_FORM_SAVING } from 'actions/formSavingActions'
 
 const getwattage = (selectedMethod, informationLead) => {
 
@@ -99,20 +96,28 @@ const getNumberOfBatteries = (selectedMethod, informationLead) => {
 
   //* Get the cost kw/h in the select department
   const preciokwh = PRICE_KWH.filter(department => department.department === informationLead.department)
-
   //* Use the formula to calculate wattage per hour
   const necessaryWattageInHoursWithoutElectricity = (((invoice_value_unformat / preciokwh[0].value) / 30) / 24) * hours_without_electricity
   const batteriesNecessary = necessaryWattageInHoursWithoutElectricity / wattageLuziol
-
   return Math.ceil(batteriesNecessary)
-
 }
 
 //* Get the cost of the luzioles
 const getCostBatteries = (selectedMethod, numberOfLuzioles) => {
   if (!(selectedMethod === METHODS_OF_SAVING.SYSTEM_SUPPORT || selectedMethod === METHODS_OF_SAVING.SUPPORT_SOLAR)) return null
-
   return Math.ceil((numberOfLuzioles * 20000000) / 100000) * 100000
+}
+
+const handleSubmit1 = (event) => {
+  window.location.href="https://api.whatsapp.com/send?phone=573103865380&text=Mi proyecto aún no es rentable, mi correo electrónico es: "
+}
+
+const handleSubmit2 = (event) => {
+  window.location.href="https://api.whatsapp.com/send?phone=573103865380&text=Mi proyecto excede los 10 kWp, ¿me podrían ayudar con una asesoría al respecto?"
+}
+
+const handleSubmit3 = (event) => {
+  window.location.href="https://api.whatsapp.com/send?phone=573103865380&text=Estoy interesado en un sistema para olvidarme de los cortes de energía. 🔋"
 }
 
 const InformationSaving = ({ informationLead, selectedMethod, buttonZendesk, setButtonZendesk }) => {
@@ -205,34 +210,35 @@ const InformationSaving = ({ informationLead, selectedMethod, buttonZendesk, set
         no son tan rentables aún, especialmente por el costo de los equipos principales. ¡Pero no te preocupes! Estos sistemas
         han bajado más del 97% en los anteriores 10 años, por lo que pensamos que ya estamos cerca de poder atenderte. Te invitamos
         a compartir con nosotros tu correo y seguirnos en redes sociales para identificar el mejor momento para volver a revisar. ¡Gracias!
-      </article>
+        <div class="text-center">
+          <input type='submit'
+            className='transition w-min m-auto px-2 py-1 bg-seos-blue-light rounded-md text-white cursor-pointer hover:bg-seos-blue-dark'
+            value="Contáctanos" form="{}"
+            onClick={handleSubmit1}
+          />  
+        </div>
+      </article>      
     )
   }
 
   if (wattage > 10) {
     return (
       <article className='w-80 sm:w-[48%] md:px-8 ml-2 h-full py-4 border border-gray rounded-md shadow-md'>
-        La potencia de tu proyecto excede los 10 kW, contáctate con uno de nuestros asesores por medio del botón de WhatsApp a continuación.
-        <div className="App">
-          <FloatingWhatsApp
-            phoneNumber="+57 3103865380"
-            accountName="SEOS Energy"            
-            statusMessage="Responde típicamente en 10 minutos"
-            chatMessage="Hola, entendemos que la potencia de tu proyecto excede los 10 kW. Si deseas que nuestro equipo se ponga en contacto contigo, por favor proporcionanos tu nombre y correo electrónico"
-            placeholder="Escribe tu mensaje ..."
-            chatboxHeight
-            allowEsc
-            allowClickAway
-            notification
-            notificationSound            
-          />          
+        La potencia de tu proyecto excede los 10 kWp, contáctate con uno de nuestros asesores por medio del botón de WhatsApp a continuación.
+        <div class="text-center">
+          <input type='submit'
+            className='transition w-min m-auto px-2 py-1 bg-seos-blue-light rounded-md text-white cursor-pointer hover:bg-seos-blue-dark'
+            value="Contáctanos" form="{}"
+            onClick={handleSubmit2}
+          />  
         </div>
       </article>
+
     )
   }
 
   return (
-    <article className='w-80 sm:w-[48%] h-full border  border-gray rounded-md shadow-md'>
+    <article className='w-80 sm:w-[48%] h-full py-4 border border-gray rounded-md shadow-md'>
       <p className='px-4 py-2'>Con tus datos obtuvimos:</p>
       <section className='w-full md:pl-12 md:pr-2 h-min'>
         {
@@ -267,6 +273,7 @@ const InformationSaving = ({ informationLead, selectedMethod, buttonZendesk, set
             </li>
           </ul>
         }
+
         {
           selectedMethod === METHODS_OF_SAVING.SUPPORT_SOLAR &&
           <ul className='list-disc list-outsid'>
@@ -290,24 +297,18 @@ const InformationSaving = ({ informationLead, selectedMethod, buttonZendesk, set
             </li>
           </ul>
         }
-        <p className='px-4 py-2'>Estos valores son de referencia y podrán variar con base en la visita técnica que se realizará como parte del proyecto. contáctate con uno de nuestros asesores por medio del botón de WhatsApp a continuación.</p>
-      </section>
-      <div className="App">
-          <FloatingWhatsApp
-            phoneNumber="+57 3103865380"
-            accountName="SEOS Energy"            
-            statusMessage="Responde típicamente en 10 minutos"
-            chatMessage="Hola, mi nombre es Andrés.  Por favor déjame tu consulta y te responderé en la mayor brevedad."
-            chatboxHeight
-            allowEsc
-            allowClickAway
-            notification
-            notificationSound            
-          />          
+        <p className='text-justify py-2'>Estos valores son de referencia y podrán variar con base en la visita técnica que se realizará como parte del proyecto. </p>
+        <div class="text-center">
+          <input type='submit'
+            className='transition w-min m-auto px-2 py-1 bg-seos-blue-light rounded-md text-white cursor-pointer hover:bg-seos-blue-dark'
+            value="Contáctanos" form="{}"
+            onClick={handleSubmit3}
+          />  
         </div>
-    </article>
+      </section>
+    </article>    
   )
-
+  
 }
 
 export default InformationSaving
