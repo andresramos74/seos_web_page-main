@@ -399,10 +399,17 @@ const InformationSaving = ({
           <input
             type="submit"
             className="transition w-min m-auto px-2 py-1 bg-seos-blue-light rounded-md text-white cursor-pointer hover:bg-seos-blue-dark"
+            value="Contáctanos"
+            form="{}"
+            onClick={handleSubmit3}
+          />
+          {/*<input
+            type="submit"
+            className="transition w-min m-auto px-2 py-1 bg-seos-blue-light rounded-md text-white cursor-pointer hover:bg-seos-blue-dark"
             value="Y si lo financio?"
             form="{}"
             onClick={handleSubmit4}
-          />
+        />*/}
         </div>
       </section>
     </article>
