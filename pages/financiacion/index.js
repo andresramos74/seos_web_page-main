@@ -147,14 +147,6 @@ const Financing = () => {
           setNameEvent={setNameEvent}
           dispatch={dispatch}
         />
-        {/*<article className="mt-4 px-4 py-2">
-          <button
-            className="flex mx-auto mt-2 px-4 h-8 leading-8 bg-seos-blue-light text-white hover:bg-seos-blue-dark rounded-md"
-            onClick={handleSubmit}
-          >
-            Simular
-          </button>
-  </article>*/}
       </form>
     </section>
   );
