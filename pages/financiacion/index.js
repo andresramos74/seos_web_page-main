@@ -10,6 +10,7 @@ import Image from "next/image";
 import logoSeos from "public/logo_seos_blanco.png";
 import FinancingData from "components/FinancingData";
 import { imageConfigDefault } from "next/dist/shared/lib/image-config";
+import Head from "next/head";
 
 const referrerNameInitialValue = {
   value: "",
@@ -119,6 +120,13 @@ const Financing = () => {
   return (
     <section className="flex flex-col font-['Poppins'] w-full overflow-x-hidden">
       <header className="sticky top-0 w-full bg-seos-blue-dark">
+        <Head>
+          <title>SEOS Energy | Financiación</title>
+          <meta
+            name="description"
+            content="SEOS Energy es una compañía enfocada a....."
+          />
+        </Head>
         <div className="relative w-52 h-20 mx-auto">
           <Image
             src={logoSeos}
@@ -137,16 +145,18 @@ const Financing = () => {
         <p className="px-3 py-2 border-b border-b-gray text-lg font-semibold">
           Formulario de financiación
         </p>
-        <FinancingData
-          values={values}
-          errors={errors}
-          touched={touched}
-          referrerName={referrerName}
-          nameEvent={nameEvent}
-          setReferrerName={setReferrerName}
-          setNameEvent={setNameEvent}
-          dispatch={dispatch}
-        />
+        <div className="flex flex-wrap">
+          <FinancingData
+            values={values}
+            errors={errors}
+            touched={touched}
+            referrerName={referrerName}
+            nameEvent={nameEvent}
+            setReferrerName={setReferrerName}
+            setNameEvent={setNameEvent}
+            dispatch={dispatch}
+          />
+        </div>
       </form>
     </section>
   );

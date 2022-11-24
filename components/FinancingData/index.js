@@ -12,6 +12,9 @@ import { PROJECT_COST } from "helpers/texts";
 import React, { useState, useEffect } from "react";
 import "bootstrap/dist/css/bootstrap.css";
 import {
+  ComposedChart,
+  Line,
+  Area,
   BarChart,
   Bar,
   Cell,
@@ -38,7 +41,7 @@ const data = [
   {
     name: "2",
     uv: -2000,
-    pv: -9800,
+    pv: 9800,
   },
   {
     name: "3",
@@ -59,6 +62,51 @@ const data = [
     name: "6",
     uv: 3490,
     pv: 4300,
+  },
+];
+
+const data2 = [
+  {
+    name: "Page A",
+    uv: 590,
+    pv: 800,
+    amt: 1400,
+    cnt: 490,
+  },
+  {
+    name: "Page B",
+    uv: 868,
+    pv: 967,
+    amt: 1506,
+    cnt: 590,
+  },
+  {
+    name: "Page C",
+    uv: 1397,
+    pv: 1098,
+    amt: 989,
+    cnt: 350,
+  },
+  {
+    name: "Page D",
+    uv: 1480,
+    pv: 1200,
+    amt: 1228,
+    cnt: 480,
+  },
+  {
+    name: "Page E",
+    uv: 1520,
+    pv: 1108,
+    amt: 1100,
+    cnt: 460,
+  },
+  {
+    name: "Page F",
+    uv: 1400,
+    pv: 680,
+    amt: 1700,
+    cnt: 380,
   },
 ];
 
@@ -202,15 +250,21 @@ const FinancingData = ({ setReferrerName, setNameEvent, dispatch }) => {
     const value = parameters.get("value");
     setProjectCost(value);
   });
+
   const projectCostSimualtionInt = 0;
+
   if (projectCostSimualtion) {
     projectCostSimualtionInt = parseInt(
       projectCostSimualtion.split(".").join("")
     );
   }
 
-  const valueAPR = 14.5;
-  const valueMD = (((1 + valueAPR / 100) ** (1 / 12) - 1) * 100).toFixed(2);
+  const valueAPR = 34; //Tasa efectiva anual del prestamo
+  const valueMD = (((1 + valueAPR / 100) ** (1 / 12) - 1) * 100).toFixed(2); //Tasa nominal mes vencido
+  const valueInsurance = 60000;
+  const valueFee = 9000;
+  const valueKWP = 2.0508;
+  const valueOthers = 3000;
 
   const getPaymentValue = (
     value,
@@ -233,12 +287,16 @@ const FinancingData = ({ setReferrerName, setNameEvent, dispatch }) => {
     var im2 = (1 + im) ** -numberOfPayments;
 
     // Cuota Cap. + Int.
-    a = (value * im) / (1 - im2);
+    a =
+      (value * im) / (1 - im2) +
+      valueFee * valueKWP +
+      valueInsurance +
+      valueOthers;
     return a;
   };
 
   return (
-    <article className="flex flex-wrap gap-7 px-4 pt-5 md:border-t md:border-t-gray">
+    <article className="flex flex-wrap gap-7 px-4 pt-5 md:border-t md:border-t-gray ">
       <div>
         <p>Valor del proyecto:</p>
         <p>{"$ " + projectCostSimualtion}</p>
@@ -286,9 +344,9 @@ const FinancingData = ({ setReferrerName, setNameEvent, dispatch }) => {
                 100
           )}
         </p>
-        <p>
+        {/*<p>
           Tasa E.A.: {valueAPR + "%"} Tasa M.V.: {valueMD + "%"}
-        </p>
+          </p>*/}
         <p>
           Valor cuota fija:{" $ "}
           {Intl.NumberFormat("es-CO").format(
@@ -301,9 +359,7 @@ const FinancingData = ({ setReferrerName, setNameEvent, dispatch }) => {
             ).toFixed(0)
           )}
         </p>
-      </div>
-      <div>
-        <BarChart
+        {/*<BarChart
           width={500}
           height={300}
           data={data}
@@ -319,11 +375,11 @@ const FinancingData = ({ setReferrerName, setNameEvent, dispatch }) => {
           <XAxis dataKey="name" />
           <YAxis />
           <Tooltip />
-          <Legend />
+          <Legend type="line" />
           <ReferenceLine y={0} stroke="#000" />
           <Bar dataKey="pv" fill="#8884d8" stackId="stack" />
           <Bar dataKey="uv" fill="#82ca9d" stackId="stack" />
-        </BarChart>
+        </BarChart>*/}
       </div>
     </article>
   );
