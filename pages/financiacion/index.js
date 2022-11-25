@@ -78,43 +78,9 @@ const Financing = () => {
     return newValues;
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
-    setErrorForm(null);
-    values.referrerFrom = values.nume;
-
-    if (values.numero_cuotas === "Evento") {
-      values.referrerFrom = nameEvent.value;
-    }
-
-    if (values.numero_cuotas === "Instalador referido") {
-      values.referrerFrom = referrerName.value;
-    }
-
-    //* Validate that the form has no errors
-    if (Object.getOwnPropertyNames(errors).length !== 0) {
-      setErrorForm("Tienes errores en el formulario");
-      return;
-    }
-
-    //* Some, if a condition is fullfilled with a value of the array then return false to the isEmpty
-    const isEmpty = Object.entries(values).some((value) => {
-      //* value[0] -> Name of the field
-      //* value[1] -> Value of the field
-
-      //* Validate that the fields are not empty except acosol_associate (boolean) and web_page(optional)
-      if (!(value[0] === "acosol_associate") && !(value[0] === "web_page")) {
-        if (value[1] === "") {
-          return true;
-        }
-      }
-    });
-
-    if (isEmpty) {
-      setErrorForm("Los campos no pueden estar vacios");
-      return;
-    }
+  const handleSubmit = (event) => {
+    window.location.href =
+      "http://localhost:3000/financiacion?value=" + projectCost;
   };
 
   return (
@@ -138,24 +104,44 @@ const Financing = () => {
           />
         </div>
       </header>
+      <br></br>
       <form
-        className="flex flex-col pb-4 m-auto mt-8 mb-32 w-full border border-gray sm:w-4/5 md:w-[680px] lg:w-[750px] h-min rounded-md"
+        className="flex flex-col pt-2 pb-2 m-auto mt-8 mb-32 w-full border border-gray sm:w-4/5 md:w-[680px] lg:w-[850px] h-min rounded-md"
         onSubmit={handleSubmit}
       >
         <p className="px-3 py-2 border-b border-b-gray text-lg font-semibold">
-          Formulario de financiación
+          Simulador de financiación
         </p>
-        <div className="flex flex-wrap">
-          <FinancingData
-            values={values}
-            errors={errors}
-            touched={touched}
-            referrerName={referrerName}
-            nameEvent={nameEvent}
-            setReferrerName={setReferrerName}
-            setNameEvent={setNameEvent}
-            dispatch={dispatch}
+        <FinancingData
+          values={values}
+          errors={errors}
+          touched={touched}
+          referrerName={referrerName}
+          nameEvent={nameEvent}
+          setReferrerName={setReferrerName}
+          setNameEvent={setNameEvent}
+          dispatch={dispatch}
+        />
+        <p className="text-justify py-2 m-3">
+          Estos valores son de referencia y podrán variar con base en la visita
+          técnica que se realizará como parte del proyecto.{" "}
+        </p>
+        <div class="text-center">
+          <input
+            type="submit"
+            className="transition w-min m-auto px-2 py-1 bg-seos-blue-light rounded-md text-white cursor-pointer hover:bg-seos-blue-dark"
+            value="Contáctanos"
+            form="{}"
+            onClick={handleSubmit}
           />
+
+          {/*<input
+            type="submit"
+            className="transition w-min m-auto px-2 py-1 bg-seos-blue-light rounded-md text-white cursor-pointer hover:bg-seos-blue-dark"
+            value="Y si lo financio?"
+            form="{}"
+            onClick={handleSubmit4}
+        />*/}
         </div>
       </form>
     </section>

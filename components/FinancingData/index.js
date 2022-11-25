@@ -296,12 +296,22 @@ const FinancingData = ({ setReferrerName, setNameEvent, dispatch }) => {
   };
 
   return (
-    <article className="flex flex-wrap gap-7 px-4 pt-5 md:border-t md:border-t-gray ">
-      <div>
-        <p>Valor del proyecto:</p>
-        <p>{"$ " + projectCostSimualtion}</p>
-        <p>Número de cuotas:</p>
+    <section className="pl-3 flex-wrap md:border-t-gray w-[48%]">
+      <div className="clearfix">
+        <span className="text-left float-left">Valor del proyecto:</span>
+        <span className="text-right float-right">
+          {"$ " + Intl.NumberFormat("es-CO").format(projectCostSimualtion)}
+        </span>
+      </div>
+      <div className="py-2 clearfix">
+        <span className="text-left">Número de cuotas:</span>
+        <span className="text-right float-right">
+          {stateNumeroCuotas.value}
+        </span>
+      </div>
+      <div className="text-center float-center clearfix">
         <input
+          className="slider"
           id="numerodecuotas"
           type="range"
           min="36"
@@ -310,19 +320,20 @@ const FinancingData = ({ setReferrerName, setNameEvent, dispatch }) => {
           onChange={handleNumeroCuotasChange}
           step="6"
         />
-        <span className="badge m-2 text-bg-primary">
-          {stateNumeroCuotas.value}
+      </div>
+      <div className="py-2 clearfix">
+        <span className="text-left float-left">
+          Valor de la cuota inicial ({statePorcentajeCuotaInicial.value + "%"}):
         </span>
-        <p>Valor de la cuota inicial:</p>
-        <div>
-          <span>
-            {"$ " +
-              Intl.NumberFormat("es-CO").format(
-                (projectCostSimualtionInt * statePorcentajeCuotaInicial.value) /
-                  100
-              )}
-          </span>
-        </div>
+        <span className="text-right float-right">
+          {"$ " +
+            Intl.NumberFormat("es-CO").format(
+              (projectCostSimualtionInt * statePorcentajeCuotaInicial.value) /
+                100
+            )}
+        </span>
+      </div>
+      <div className="text-center float-center clearfix">
         <input
           className="slider"
           id="porcentajecuotainicial"
@@ -333,22 +344,25 @@ const FinancingData = ({ setReferrerName, setNameEvent, dispatch }) => {
           onChange={handlePorcentajeCuotaInicialChange}
           step="10"
         />
-        <span className="badge m-2 text-bg-primary">
-          {statePorcentajeCuotaInicial.value + "%"}
-        </span>
-        <p>
-          Valor financiación:{" $ "}
+      </div>
+      <div className="py-2 clearfix">
+        <span className="text-left float-left">Valor financiación:</span>
+        <span className="text-right float-right">
+          {" $ "}
           {Intl.NumberFormat("es-CO").format(
             projectCostSimualtionInt -
               (projectCostSimualtionInt * statePorcentajeCuotaInicial.value) /
                 100
           )}
-        </p>
-        {/*<p>
+        </span>
+      </div>
+      {/*<p>
           Tasa E.A.: {valueAPR + "%"} Tasa M.V.: {valueMD + "%"}
           </p>*/}
-        <p>
-          Valor cuota fija:{" $ "}
+      <div className="py-2 clearfix">
+        <span className="text-left float-left">Valor cuota fija:</span>
+        <span className="text-right float-right">
+          {" $ "}
           {Intl.NumberFormat("es-CO").format(
             getPaymentValue(
               projectCostSimualtionInt -
@@ -358,8 +372,9 @@ const FinancingData = ({ setReferrerName, setNameEvent, dispatch }) => {
               valueAPR
             ).toFixed(0)
           )}
-        </p>
-        {/*<BarChart
+        </span>
+      </div>
+      {/*<BarChart
           width={500}
           height={300}
           data={data}
@@ -380,8 +395,7 @@ const FinancingData = ({ setReferrerName, setNameEvent, dispatch }) => {
           <Bar dataKey="pv" fill="#8884d8" stackId="stack" />
           <Bar dataKey="uv" fill="#82ca9d" stackId="stack" />
         </BarChart>*/}
-      </div>
-    </article>
+    </section>
   );
 };
 
