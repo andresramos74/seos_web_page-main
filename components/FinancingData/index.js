@@ -1,402 +1,194 @@
-import { ERROR_TEXTS, LABEL_TEXTS } from "../FinancingData/texts";
-import { TOUCHED_STATES } from "helpers/states";
-import {
-  TYPES_FORM_FINANCING,
-  TYPES_FORM_PARTNERS,
-} from "actions/financingActions";
-import {
-  validateName,
-  validateNameEvent,
-} from "helpers/validationsFormPartners";
-import { PROJECT_COST } from "helpers/texts";
-import React, { useState, useEffect } from "react";
+import {TOUCHED_STATES} from "helpers/states";
+import React, {useState, useEffect, useReducer} from "react";
 import "bootstrap/dist/css/bootstrap.css";
-import {
-  ComposedChart,
-  Line,
-  Area,
-  BarChart,
-  Bar,
-  Cell,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  Legend,
-  ReferenceLine,
-  ResponsiveContainer,
-} from "recharts";
+import dynamic from "next/dynamic";
+import {getPaymentValue} from "helpers/financingHelpers";
+import {VALUES_APR} from "helpers/texts";
 
-const data = [
-  {
-    name: "0",
-    uv: 712.452,
-    pv: 2400,
-  },
-  {
-    name: "1",
-    uv: -3000,
-    pv: 1398,
-  },
-  {
-    name: "2",
-    uv: -2000,
-    pv: 9800,
-  },
-  {
-    name: "3",
-    uv: 2780,
-    pv: 3908,
-  },
-  {
-    name: "4",
-    uv: -1890,
-    pv: 4800,
-  },
-  {
-    name: "5",
-    uv: 2390,
-    pv: -3800,
-  },
-  {
-    name: "6",
-    uv: 3490,
-    pv: 4300,
-  },
-];
-
-const data2 = [
-  {
-    name: "Page A",
-    uv: 590,
-    pv: 800,
-    amt: 1400,
-    cnt: 490,
-  },
-  {
-    name: "Page B",
-    uv: 868,
-    pv: 967,
-    amt: 1506,
-    cnt: 590,
-  },
-  {
-    name: "Page C",
-    uv: 1397,
-    pv: 1098,
-    amt: 989,
-    cnt: 350,
-  },
-  {
-    name: "Page D",
-    uv: 1480,
-    pv: 1200,
-    amt: 1228,
-    cnt: 480,
-  },
-  {
-    name: "Page E",
-    uv: 1520,
-    pv: 1108,
-    amt: 1100,
-    cnt: 460,
-  },
-  {
-    name: "Page F",
-    uv: 1400,
-    pv: 680,
-    amt: 1700,
-    cnt: 380,
-  },
-];
+const Chart = dynamic(() => import ("react-apexcharts"), {ssr: false});
 
 const referrerNameInitialValue = {
-  value: "",
-  touched: TOUCHED_STATES.NOT_TOUCHED,
+    value: "",
+    touched: TOUCHED_STATES.NOT_TOUCHED
 };
 
 const nameEventInitialValue = {
-  value: "",
-  touched: TOUCHED_STATES.NOT_TOUCHED,
+    value: "",
+    touched: TOUCHED_STATES.NOT_TOUCHED
 };
 
-const FinancingData = ({ setReferrerName, setNameEvent, dispatch }) => {
-  const updateFormValues = (value, name) => {
-    //* Update the values of the reducer
-    if (name === "email") {
-      dispatch({ type: TYPES_FORM_FINANCING.CHANGE_EMAIL, payload: value });
-    }
+const FinancingData = ({options, setOptions}) => {
+    var valuePayment = 0;
+    const [projectCostSimulation, setProjectCostSimulation] = useState(null);
+    const [projectWattsConsumed, setProjectWattsConsumed] = useState(null);
+    const [projectValueInvoice, setprojectValueInvoice] = useState(null);
 
-    if (name === "phone_number") {
-      dispatch({
-        type: TYPES_FORM_FINANCING.CHANGE_PHONE_NUMBER,
-        payload: value,
-      });
-    }
-
-    if (name === "web_page") {
-      dispatch({ type: TYPES_FORM_FINANCING.CHANGE_WEB_PAGE, payload: value });
-    }
-
-    if (name === "n") {
-      dispatch({
-        type: TYPES_FORM_FINANCING.CHANGE_NUMERO_CUOTAS,
-        payload: value,
-      });
-
-      //* Depend of the value then save the initial state
-
-      if (value === "Pauta") {
-        setReferrerName(referrerNameInitialValue);
-        setNameEvent(nameEventInitialValue);
-      }
-
-      if (value === "Acosol") {
-        setReferrerName(referrerNameInitialValue);
-        setNameEvent(nameEventInitialValue);
-      }
-
-      if (value === "Instalador referido") {
-        setNameEvent(nameEventInitialValue);
-      }
-
-      if (value === "Evento") {
-        setReferrerName(referrerNameInitialValue);
-      }
-    }
-
-    if (name === "referrer_name") {
-      let error = validateName(value);
-
-      error
-        ? setReferrerName({
-            value,
-            error,
-            touched: TOUCHED_STATES.TOUCHED_FIRST_TIME,
-          })
-        : setReferrerName({
-            value,
-            touched: TOUCHED_STATES.TOUCHED_OK,
-          });
-    }
-
-    if (name === "name_event") {
-      let error = validateNameEvent(value);
-
-      error
-        ? setNameEvent({
-            value,
-            error,
-            touched: TOUCHED_STATES.TOUCHED_FIRST_TIME,
-          })
-        : setNameEvent({
-            value,
-            touched: TOUCHED_STATES.TOUCHED_OK,
-          });
-    }
-  };
-
-  const [stateNumeroCuotas, setNumeroCuotas] = useState({
-    value: 36,
-  });
-
-  const [statePorcentajeCuotaInicial, setPorcentajeCuotaInicial] = useState({
-    value: 10,
-  });
-
-  const handleNumeroCuotasChange = (event) => {
-    //console.log(event);
-    setNumeroCuotas({ value: event.target.value });
-  };
-
-  const handlePorcentajeCuotaInicialChange = (event) => {
-    //console.log(event);
-    setPorcentajeCuotaInicial({
-      value: event.target.value,
+    useEffect(() => {
+        const parameters = new URLSearchParams(window.location.search);
+        const projectCostTEMP = parameters.get("value");
+        const wattsConsumed = parameters.get("value2");
+        const valueInvoice = parameters.get("value3")
+        /*console.log("values 1, 2 and 3");
+        console.log(projectCostTEMP);
+        console.log(wattsConsumed);
+        console.log(valueInvoice);*/
+        setProjectCostSimulation(projectCostTEMP);
+        setProjectWattsConsumed(wattsConsumed);
+        setprojectValueInvoice(valueInvoice);
     });
-  };
 
-  //* Get the total cost of the project
-  const getProjectCost = (selectedMethod, wattage) => {
-    if (
-      !(
-        selectedMethod === METHODS_OF_SAVING.SOLAR ||
-        selectedMethod === METHODS_OF_SAVING.SUPPORT_SOLAR
-      )
-    )
-      return;
-    if (wattage === null) return;
+    const projectCostSimualtionInt = 0;
 
-    let entireWattage = Math.ceil(wattage);
-
-    //* Get the cost of the project
-    const costProject = PROJECT_COST.filter(
-      (costPertWattage) => costPertWattage.wattage === entireWattage
-    );
-
-    const cb = document.querySelector("#rural");
-    //console.log(cb.checked);
-    if (cb.checked) {
-      return Math.ceil(costProject[0].value2 / 100000) * 100000;
-    } else {
-      return Math.ceil(costProject[0].value / 100000) * 100000;
+    if (projectCostSimulation) {
+        projectCostSimualtionInt = parseInt(projectCostSimulation.split(".").join(""));
     }
-  };
 
-  const [projectCostSimualtion, setProjectCost] = useState(null);
+    const valueAPR = VALUES_APR.riskProfile5; // Tasa efectiva anual del prestamo el perfil 5 es el de mayo riesgo y tiene un valor de 34% Efectivo anual
+    const valueMD = (((1 + valueAPR / 100) ** (1 / 12) - 1) * 100).toFixed(2); // Tasa nominal mes vencido
+    const [stateNumeroCuotas, setNumeroCuotas] = useState({value: 36});
+    const [statePorcentajeCuotaInicial, setPorcentajeCuotaInicial] = useState({value: 10});
 
-  useEffect(() => {
-    const parameters = new URLSearchParams(window.location.search);
-    const value = parameters.get("value");
-    setProjectCost(value);
-  });
+    const valueInsurance = 60000;
+    const valueFee = 9000;
+    const valueKWP = 2.0508;
+    const valueOthers = 3000;
 
-  const projectCostSimualtionInt = 0;
+    valuePayment = getPaymentValue(projectCostSimualtionInt - (projectCostSimualtionInt * statePorcentajeCuotaInicial.value) / 100, stateNumeroCuotas.value, VALUES_APR[4], valueInsurance, valueFee, valueKWP, valueOthers);
 
-  if (projectCostSimualtion) {
-    projectCostSimualtionInt = parseInt(
-      projectCostSimualtion.split(".").join("")
-    );
-  }
+    const handleNumeroCuotasChange = (event) => {
 
-  const valueAPR = 34; //Tasa efectiva anual del prestamo
-  const valueMD = (((1 + valueAPR / 100) ** (1 / 12) - 1) * 100).toFixed(2); //Tasa nominal mes vencido
-  const valueInsurance = 60000;
-  const valueFee = 9000;
-  const valueKWP = 2.0508;
-  const valueOthers = 3000;
 
-  const getPaymentValue = (
-    value,
-    numberOfPayments,
-    effectiveAnnualInterestRate
-  ) => {
-    var a = 0;
+        const newSeries = [];
+        const yaxisValues = [];
+        const index = 1;
+        const xValue = 0,
+            yValue = 0;
+        const data = null;
+        options.series.map((s) => {
+            data = s.data.map(() => {
+                if (index <= (stateNumeroCuotas.value / 12)) {
+                    yValue = Math.floor(valuePayment); // Cuota SEOS
+                } else {
+                    yValue = Math.floor(0);
+                };
+                if (index > 20 && index < 41) { // Inversion ahorro
+                    if ((index - 20) <= (stateNumeroCuotas.value / 12)) {
+                        yValue = Math.floor((868 * (1 + 0.06270825591) ** (index - 20) * (projectValueInvoice / 868)) - valuePayment);
+                    } else {
+                        yValue = Math.floor(868 * (1 + 0.06270825591) ** (index - 20) * (projectValueInvoice / 868));
+                    }
+                };
+                if (index >= 41) { // Factura electricidad
+                    yValue = Math.floor(868 * (1 + 0.06270825591) ** (index - 40) * (projectValueInvoice / 868));
+                };
+                xValue = index++ % 20
+                if (! xValue) {
+                    xValue = 20
+                }
+                yaxisValues.push(yValue)
+                return {x: xValue, y: yValue}
+            })
+            newSeries.push({name: s.name, type: s.type, data});
+        })
+        const newyaxis = [];
+        newyaxis.push({
+            show: true,
+            min: Math.min(... yaxisValues),
+            max: Math.max(... yaxisValues)
+        })
+        useEffect(() => {
+            setNumeroCuotas({value: event.target.value});
+            setOptions({series: newSeries, yaxis: newyaxis});
+        })
+    };
 
-    const moduleNumberOfPayments = numberOfPayments / 12;
-    // Tasa Interes Nominal
-    var tin =
-      ((((1 + effectiveAnnualInterestRate / 100) ** (30 / 360) - 1) *
-        numberOfPayments) /
-        moduleNumberOfPayments) *
-      100;
+    const handlePorcentajeCuotaInicialChange = (event) => { // console.log(event);
+        setPorcentajeCuotaInicial({value: event.target.value});
+    };
 
-    // Tipo de interés fraccionado (del periodo)
-    var im = tin / (numberOfPayments / moduleNumberOfPayments) / 100;
-
-    var im2 = (1 + im) ** -numberOfPayments;
-
-    // Cuota Cap. + Int.
-    a =
-      (value * im) / (1 - im2) +
-      valueFee * valueKWP +
-      valueInsurance +
-      valueOthers;
-    return a;
-  };
-
-  return (
-    <section className="pl-3 flex-wrap md:border-t-gray w-[48%]">
-      <div className="clearfix">
-        <span className="text-left float-left">Valor del proyecto:</span>
-        <span className="text-right float-right">
-          {"$ " + Intl.NumberFormat("es-CO").format(projectCostSimualtion)}
-        </span>
-      </div>
-      <div className="py-2 clearfix">
-        <span className="text-left">Número de cuotas:</span>
-        <span className="text-right float-right">
-          {stateNumeroCuotas.value}
-        </span>
-      </div>
-      <div className="text-center float-center clearfix">
-        <input
-          className="slider"
-          id="numerodecuotas"
-          type="range"
-          min="36"
-          max="72"
-          value={stateNumeroCuotas.value}
-          onChange={handleNumeroCuotasChange}
-          step="6"
-        />
-      </div>
-      <div className="py-2 clearfix">
-        <span className="text-left float-left">
-          Valor de la cuota inicial ({statePorcentajeCuotaInicial.value + "%"}):
-        </span>
-        <span className="text-right float-right">
-          {"$ " +
-            Intl.NumberFormat("es-CO").format(
-              (projectCostSimualtionInt * statePorcentajeCuotaInicial.value) /
-                100
-            )}
-        </span>
-      </div>
-      <div className="text-center float-center clearfix">
-        <input
-          className="slider"
-          id="porcentajecuotainicial"
-          type="range"
-          min="10"
-          max="50"
-          value={statePorcentajeCuotaInicial.value}
-          onChange={handlePorcentajeCuotaInicialChange}
-          step="10"
-        />
-      </div>
-      <div className="py-2 clearfix">
-        <span className="text-left float-left">Valor financiación:</span>
-        <span className="text-right float-right">
-          {" $ "}
-          {Intl.NumberFormat("es-CO").format(
-            projectCostSimualtionInt -
-              (projectCostSimualtionInt * statePorcentajeCuotaInicial.value) /
-                100
-          )}
-        </span>
-      </div>
-      {/*<p>
+    return (
+        <section>
+            <section className="pl-4 flex-wrap md:border-t-gray w-[45%] float-left">
+                <div className="clearfix">
+                    <span className="text-left float-left">Valor del proyecto:</span>
+                    <span className="text-right float-right">
+                        {
+                        "$ " + Intl.NumberFormat("es-CO").format(projectCostSimualtionInt)
+                    } </span>
+                </div>
+                <div className="py-2 clearfix">
+                    <span className="text-left">Número de cuotas:</span>
+                    <span className="text-right float-right">
+                        {
+                        stateNumeroCuotas.value
+                    } </span>
+                </div>
+                <div className="text-center float-center clearfix">
+                    <input className="slider" id="numerodecuotas" type="range" min="36" max="72"
+                        value={
+                            stateNumeroCuotas.value
+                        }
+                        onChange={handleNumeroCuotasChange}
+                        step="6"/>
+                </div>
+                <div className="py-2 clearfix">
+                    <span className="text-left float-left">
+                        Valor de la cuota inicial ({
+                        statePorcentajeCuotaInicial.value + "%"
+                    }
+                        ):
+                    </span>
+                    <span className="text-right float-right">
+                        {
+                        "$ " + Intl.NumberFormat("es-CO").format((projectCostSimualtionInt * statePorcentajeCuotaInicial.value) / 100)
+                    } </span>
+                </div>
+                <div className="text-center float-center clearfix">
+                    <input className="slider" id="porcentajecuotainicial" type="range" min="10" max="50"
+                        value={
+                            statePorcentajeCuotaInicial.value
+                        }
+                        onChange={handlePorcentajeCuotaInicialChange}
+                        step="10"/>
+                </div>
+                <div className="py-2 clearfix">
+                    <span className="text-left float-left">Valor financiación:</span>
+                    <span className="text-right float-right">
+                        {" $ "}
+                        {
+                        Intl.NumberFormat("es-CO").format(projectCostSimualtionInt - (projectCostSimualtionInt * statePorcentajeCuotaInicial.value) / 100)
+                    } </span>
+                </div>
+                {/*<p>
           Tasa E.A.: {valueAPR + "%"} Tasa M.V.: {valueMD + "%"}
           </p>*/}
-      <div className="py-2 clearfix">
-        <span className="text-left float-left">Valor cuota fija:</span>
-        <span className="text-right float-right">
-          {" $ "}
-          {Intl.NumberFormat("es-CO").format(
-            getPaymentValue(
-              projectCostSimualtionInt -
-                (projectCostSimualtionInt * statePorcentajeCuotaInicial.value) /
-                  100,
-              stateNumeroCuotas.value,
-              valueAPR
-            ).toFixed(0)
-          )}
-        </span>
-      </div>
-      {/*<BarChart
-          width={500}
-          height={300}
-          data={data}
-          stackOffset="sign"
-          margin={{
-            top: 5,
-            right: 30,
-            left: 20,
-            bottom: 5,
-          }}
-        >
-          <CartesianGrid strokeDasharray="3 3" />
-          <XAxis dataKey="name" />
-          <YAxis />
-          <Tooltip />
-          <Legend type="line" />
-          <ReferenceLine y={0} stroke="#000" />
-          <Bar dataKey="pv" fill="#8884d8" stackId="stack" />
-          <Bar dataKey="uv" fill="#82ca9d" stackId="stack" />
-        </BarChart>*/}
-    </section>
-  );
+                <div className="py-2 clearfix">
+                    <span className="text-left float-left">Valor cuota fija:</span>
+                    <span className="text-right float-right">
+                        {" $ "}
+                        {
+                        Intl.NumberFormat("es-CO").format(valuePayment)
+                    } </span>
+
+                </div>
+            </section>
+            <section>
+                <div className="pl-4 pt-1 md:border-t-gray float-left">
+                    <div className="mixed-chart">
+                        {
+                        typeof window !== "undefined" && (
+                            <Chart options={options}
+                                series={
+                                    options.series
+                                }
+                                width={430}
+                                height={230}/>
+                        )
+                    } </div>
+                </div>
+            </section>
+        </section>
+    );
 };
 
 export default FinancingData;
