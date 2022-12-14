@@ -1,6 +1,5 @@
-import React, {useState} from "react";
+import React, {useState, useEffect} from "react";
 import PROJECT_COST from "helpers/texts"
-import setProjectCost from "components/FinancingData/index"
 
 const generateVerificationDigit = (nit) => { // Revisar función ya que no funciona con cédulas de más de 9 digitos
 
@@ -98,7 +97,7 @@ const getPaymentValue = (valueOfCredit, numberOfPayments, effectiveAnnualInteres
 
     var im2 = (1 + im) ** -numberOfPayments;
     // Cuota Cap. + Int.
-    return((valueOfCredit * im) / (1 - im2) + valueFee * valueKWP + valueInsurance + valueOthers);
+    return(((valueOfCredit * im) / (1 - im2) + valueFee * valueKWP * 12 / 1350 + valueInsurance + valueOthers) * 1.0627); // ajustada
 
 };
 
@@ -166,6 +165,11 @@ const optionsInitialValue = {
     },
     yaxis: [
         {
+            labels: {
+                formatter: function (value) {
+                    return "$ " + Intl.NumberFormat("es-CO").format(value);
+                }
+            },
             show: true,
             min: -500000,
             max: 900000
@@ -394,6 +398,196 @@ const optionsInitialValue = {
     ]
 };
 
+const computeIRR = (cf, numOfFlows, projectInitialCost) => {
+    const LOW_RATE = 0.01;
+    const HIGH_RATE = 5.0;
+    const MAX_ITERATION = 10000;
+    const PRECISION_REQ = 0.00000001;
+    const i = 0,
+        j = 0;
+    const m = 0.0;
+    const oldValue = 0.00;
+    const newValue = 0.00;
+    const oldguessRate = LOW_RATE;
+    const newguessRate = LOW_RATE;
+    const guessRate = LOW_RATE;
+    const lowGuessRate = LOW_RATE;
+    const highGuessRate = HIGH_RATE;
+    const npv = 0.0;
+    const denom = 0.0;
+    const cfTemp = [];
+    cfTemp.push(...cf);
+    cfTemp[0] = cf[0] - projectInitialCost;
+
+    console.log("projectInitialCost");
+    console.log(projectInitialCost);
+    console.log("cfTemp");
+    console.log(cfTemp);
+    for (i = 0; i < MAX_ITERATION; i++) {
+        npv = 0.00;
+        for (j = 0; j < numOfFlows; j++) {
+            denom = Math.pow((1 + guessRate), j);
+            npv = npv + (cfTemp[j] / denom);
+        }
+        // console.log("npv2");
+        // console.log(npv);
+        /* Stop checking once the required precision is achieved */
+        if ((npv > 0) && (npv < PRECISION_REQ)) 
+            break;
+        
+
+
+        if (oldValue == 0) 
+            oldValue = npv;
+         else 
+            oldValue = newValue;
+         newValue = npv;
+        if (i > 0) {
+            if (oldValue < newValue) {
+                if (oldValue < 0 && newValue < 0) 
+                    highGuessRate = newguessRate;
+                 else 
+                    lowGuessRate = newguessRate;
+                
+
+
+            } else {
+                if (oldValue > 0 && newValue > 0) 
+                    lowGuessRate = newguessRate;
+                 else 
+                    highGuessRate = newguessRate;
+                
+
+
+            }
+        }
+        oldguessRate = guessRate;
+        guessRate = (lowGuessRate + highGuessRate) / 2;
+        newguessRate = guessRate;
+    }
+    return guessRate;
+};
+
+// const updateChartData = (stateNumeroCuotas, projectValueInvoice, valuePayment, irrValue, setirrValue, projectInitialCost, newSeries, newyaxis) => {
+const updateChartData = (options, setOptions, stateNumeroCuotas, projectValueInvoice, valuePayment, irrValue, setirrValue, projectInitialCost) => {
+    const newSeries = [];
+    const newyaxis = [];
+    const yaxisValues = [];
+    const cfValues = [];
+    const index = 1;
+    const xValue = 0,
+        yValue = 0;
+    const data = null;
+    var flag = 0;
+    optionsInitialValue.series.map((s) => {
+        data = s.data.map(() => {
+
+            if (index <= (stateNumeroCuotas.value / 12)) {
+                yValue = Math.floor(valuePayment); // Cuota SEOS
+                flag = 0;
+            } else {
+                if (index <= 21) {
+                    if ((stateNumeroCuotas.value % 12) && ! flag) {
+                        flag = 1;
+                        yValue = Math.floor(valuePayment / 2);
+                    } else {
+                        yValue = Math.floor(0);
+                    }
+                }
+            };
+            if (index > 20 && index < 41) { // Inversion ahorro
+                if ((index - 20) <= (stateNumeroCuotas.value / 12)) {
+                    yValue = Math.floor((868 * (1 + 0.05989721558) ** (index - 20) * (projectValueInvoice / 868)) - valuePayment);
+                    flag = 0;
+
+                } else {
+                    if ((stateNumeroCuotas.value % 12) && ! flag) {
+                        console.log("FLAG INCREASE");
+                        flag++;
+                        yValue = Math.floor(868 * (1 + 0.05989721558) ** (index - 20) * (projectValueInvoice / 868) - valuePayment / 2);
+                    } else {
+                        yValue = Math.floor(868 * (1 + 0.05989721558) ** (index - 20) * (projectValueInvoice / 868));
+                    }
+                } cfValues.push(yValue * 12)
+            };
+            if (index >= 41) { // Factura electricidad
+                yValue = Math.floor(868 * (1 + 0.05989721558) ** (index - 40) * (projectValueInvoice / 868));
+            };
+            xValue = index++ % 20
+            if (! xValue) {
+                xValue = 20
+            }
+            yaxisValues.push(yValue)
+            return {x: xValue, y: yValue}
+        })
+        flag = 0;
+        newSeries.push({name: s.name, type: s.type, data});
+    })
+    newyaxis.push({
+        labels: {
+            formatter: function (value) {
+                return "$ " + Intl.NumberFormat("es-CO").format(value);
+            }
+        },
+        show: true,
+        min: Math.round(Math.min(... yaxisValues) / 100000) * 100000,
+        max: Math.round(Math.max(... yaxisValues) / 100000) * 100000
+    })
+    irrValue = computeIRR(cfValues, cfValues.length, projectInitialCost);
+    setirrValue(irrValue);
+    const optionsCreate = {
+        chart: {
+            id: "chartMain",
+            locales: [
+                {
+                    name: "ru"
+                },
+            ],
+            defaultLocale: "ru",
+            stacked: true
+        },
+        labels: [
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11,
+            12,
+            13,
+            14,
+            15,
+            16,
+            17,
+            18,
+            19,
+            20,
+        ],
+        xaxis: {
+            type: "text"
+        },
+        yaxis: newyaxis,
+        markers: {
+            size: 0,
+            shape: "square",
+            radius: 0
+        },
+        stroke: {
+            width: [0, 0, 2]
+        },
+        colors: [
+            "#008ffb", "#feb019", "#00e396"
+        ],
+        series: newSeries
+    };
+
+    setOptions(optionsCreate);
+}
 
 export {
     generateVerificationDigit,
@@ -402,5 +596,7 @@ export {
     generateMunicipalities,
     getPaymentValue,
     getProjectCost,
-    optionsInitialValue
+    optionsInitialValue,
+    computeIRR,
+    updateChartData
 }

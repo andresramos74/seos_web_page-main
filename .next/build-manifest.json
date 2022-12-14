@@ -25,10 +25,15 @@
       "static/chunks/main.js",
       "static/chunks/pages/_error.js"
     ],
-    "/financiacion": [
+    "/ahorro": [
       "static/chunks/webpack.js",
       "static/chunks/main.js",
-      "static/chunks/pages/financiacion.js"
+      "static/chunks/pages/ahorro.js"
+    ],
+    "/partners": [
+      "static/chunks/webpack.js",
+      "static/chunks/main.js",
+      "static/chunks/pages/partners.js"
     ]
   },
   "ampFirstPages": []

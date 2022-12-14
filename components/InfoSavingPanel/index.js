@@ -12,6 +12,7 @@ const InfoSavingPanel = ({goToForm, setGoToForm, setSelectedMethod}) => {
     const {isOpenModal: isOpenModalSupportSystem, openModal: openModalSupportSystem, closeModal: closeModalSupportSystem} = useModal(false)
     const {isOpenModal: isOpenModalSolarAndSupport, openModal: openModalSolarAndSupport, closeModal: closeModalSolarAndSupport} = useModal(false)
 
+
     return (
         <article className={
             `transition ${

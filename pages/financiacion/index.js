@@ -4,16 +4,14 @@ import Image from "next/image";
 import logoSeos from "public/logo_seos_blanco.png";
 import FinancingData from "components/FinancingData";
 import Head from "next/head";
-import {optionsInitialValue} from "helpers/financingHelpers";
-import projectCost from "components/InformationSaving/index"
 
-const financiacion = (projectCost) => {
+const financiacion = () => {
 
-    const [options, setOptions] = useState(optionsInitialValue);
-    const [projectCost2, setProjectCost] = useState(projectCost);
+
+    const [projectCost, setProjectCost] = useState(null);
 
     const handleSubmit = (event) => {
-        window.location.href = "http://localhost:3000/financiacion?value=" + projectCost2 + "&options=" + options;
+        window.location.href = "http://localhost:3000/financiacion?value=" + projectCost2;
     };
 
     return (
@@ -39,16 +37,13 @@ const financiacion = (projectCost) => {
                 <p className="px-3 py-2 border-b border-b-gray text-lg font-semibold">
                     Simulador de financiación
                 </p>
-                <FinancingData options={options}
-                    setOptions={setOptions}
-                    projectCost2={projectCost}
+                <FinancingData projectCost={projectCost}
                     setProjectCost={setProjectCost}/>
-                <p className="text-justify py-2 m-3">
+                <p className="text-justify py-2 m-5">
                     Estos valores son de referencia y podrán variar con base en la visita técnica que se realizará como parte del proyecto.{" "} </p>
-                <div class="text-center">
+                <div className="text-center">
                     <input type="submit" className="transition w-min m-auto px-2 py-1 bg-seos-blue-light rounded-md text-white cursor-pointer hover:bg-seos-blue-dark" value="Contáctanos" form="{}"
-                        onClick={handleSubmit}
-                        options={options}/>
+                        onClick={handleSubmit}/>
                 </div>
             </form>
         </article>

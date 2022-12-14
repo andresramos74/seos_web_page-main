@@ -138,13 +138,16 @@ const InformationSaving = ({informationLead, selectedMethod, buttonZendesk, setB
     const [projectCost, setProjectCost] = useState(null);
     const [luzioles, setLuzioles] = useState(null);
     const [costBatteries, setCostBatteries] = useState("");
-    const invoice_value_unformat = informationLead.invoice_value.substring(2, informationLead.invoice_value.length).replaceAll(".", "");
+    const [invoice_value_unformat, setinvoice_value_unformat] = useState(null);
+
     useEffect(() => {
+
         if (informationLead === null) 
             return;
         
 
 
+        setinvoice_value_unformat(informationLead.invoice_value.substring(2, informationLead.invoice_value.length).replaceAll(".", ""));
         if (Number(invoice_value_unformat) <= 125000) {
             setIsLowerOfTheNecessaryValue(true);
             return;
@@ -222,13 +225,13 @@ const InformationSaving = ({informationLead, selectedMethod, buttonZendesk, setB
         return (
             <article className="w-80 sm:w-[48%] md:px-8 ml-2 h-full py-4 border border-gray rounded-md shadow-md">
                 Gracias por compartir con nosotros tú información. Con estos datos,
-                                                                                                                                                                                                consideramos que el costo y el tiempo de amortización no son tan
-                                                                                                                                                                                                rentables aún, especialmente por el costo de los equipos principales.
-                                                                                                                                                                                                ¡Pero no te preocupes! Estos sistemas han bajado más del 97% en los
-                                                                                                                                                                                                anteriores 10 años, por lo que pensamos que ya estamos cerca de poder
-                                                                                                                                                                                                atenderte. Te invitamos a compartir con nosotros tu correo y seguirnos
-                                                                                                                                                                                                en redes sociales para identificar el mejor momento para volver a
-                                                                                                                                                                                                revisar. ¡Gracias!
+                                                                                                                                                                                                                                                                                                                                                                                consideramos que el costo y el tiempo de amortización no son tan
+                                                                                                                                                                                                                                                                                                                                                                                rentables aún, especialmente por el costo de los equipos principales.
+                                                                                                                                                                                                                                                                                                                                                                                ¡Pero no te preocupes! Estos sistemas han bajado más del 97% en los
+                                                                                                                                                                                                                                                                                                                                                                                anteriores 10 años, por lo que pensamos que ya estamos cerca de poder
+                                                                                                                                                                                                                                                                                                                                                                                atenderte. Te invitamos a compartir con nosotros tu correo y seguirnos
+                                                                                                                                                                                                                                                                                                                                                                                en redes sociales para identificar el mejor momento para volver a
+                                                                                                                                                                                                                                                                                                                                                                                revisar. ¡Gracias!
                 <div class="text-center">
                     <input type="submit" className="transition w-min m-auto px-2 py-1 bg-seos-blue-light rounded-md text-white cursor-pointer hover:bg-seos-blue-dark" value="Contáctanos" form="{}"
                         onClick={handleSubmit1}/>
@@ -241,7 +244,7 @@ const InformationSaving = ({informationLead, selectedMethod, buttonZendesk, setB
         return (
             <article className="w-80 sm:w-[48%] md:px-8 ml-2 h-full py-4 border border-gray rounded-md shadow-md">
                 La potencia de tu proyecto excede los 10 kWp, contáctate con uno de
-                                                                                                                                                                                                                                                                                                        nuestros asesores por medio del botón de WhatsApp a continuación.
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        nuestros asesores por medio del botón de WhatsApp a continuación.
                 <div class="text-center">
                     <input type="submit" className="transition w-min m-auto px-2 py-1 bg-seos-blue-light rounded-md text-white cursor-pointer hover:bg-seos-blue-dark" value="Contáctanos" form="{}"
                         onClick={handleSubmit2}/>
@@ -354,7 +357,7 @@ const InformationSaving = ({informationLead, selectedMethod, buttonZendesk, setB
             }
                 <p className="text-justify py-2">
                     Estos valores son de referencia y podrán variar con base en la visita
-                                                                                                                                                                                                                                                                                                                                                                                  técnica que se realizará como parte del proyecto.{" "} </p>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              técnica que se realizará como parte del proyecto.{" "} </p>
                 <div class="text-center">
                     {/*<input
             type="submit"
