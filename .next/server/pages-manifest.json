@@ -2,7 +2,6 @@
   "/_app": "pages/_app.js",
   "/_error": "pages/_error.js",
   "/_document": "pages/_document.js",
-  "/partners": "pages/partners.js",
-  "/ahorro": "pages/ahorro.js",
-  "/financiacion": "pages/financiacion.js"
+  "/financiacion": "pages/financiacion.js",
+  "/ahorro": "pages/ahorro.js"
 }

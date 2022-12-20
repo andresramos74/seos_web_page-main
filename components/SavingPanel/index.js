@@ -34,6 +34,7 @@ const SavingPanel = ({goToForm, setGoToForm, selectedMethod}) => {
             <section className="flex flex-wrap md:w-[768px] lg:w-[860px] h-max my-4 mt-4 mx-auto py-2">
                 <FormSaving goToForm={goToForm}
                     selectedMethod={selectedMethod}
+                    informationLead={informationLead}
                     setInformationLead={setInformationLead}/>
                 <InformationSaving selectedMethod={selectedMethod}
                     informationLead={informationLead}

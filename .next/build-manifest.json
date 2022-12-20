@@ -34,11 +34,6 @@
       "static/chunks/webpack.js",
       "static/chunks/main.js",
       "static/chunks/pages/financiacion.js"
-    ],
-    "/partners": [
-      "static/chunks/webpack.js",
-      "static/chunks/main.js",
-      "static/chunks/pages/partners.js"
     ]
   },
   "ampFirstPages": []

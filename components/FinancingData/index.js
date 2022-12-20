@@ -18,7 +18,14 @@ const nameEventInitialValue = {
     touched: TOUCHED_STATES.NOT_TOUCHED
 };
 
-const FinancingData = () => {
+const FinancingData = ({
+    projectCost,
+    setProjectCost,
+    stateNumeroCuotas,
+    setNumeroCuotas,
+    statePorcentajeCuotaInicial,
+    setPorcentajeCuotaInicial
+}) => {
     const [options, setOptions] = useState(optionsInitialValue);
     const [projectCostSimulation, setProjectCostSimulation] = useState(null);
     const [projectWattsConsumed, setProjectWattsConsumed] = useState(null);
@@ -28,32 +35,29 @@ const FinancingData = () => {
 
     useEffect(() => {
         const parameters = new URLSearchParams(window.location.search);
-        const projectCostTEMP = parameters.get("value");
-        const wattsConsumed = parameters.get("value2");
-        const valueInvoice = parameters.get("value3");
-
+        const projectCostTEMP = parameters.get("ProjectCost");
+        const wattsConsumed = parameters.get("Kwp");
+        const invoiceValue = parameters.get("invoiceValue");
+        projectCost = projectCostTEMP;
         setProjectCostSimulation(projectCostTEMP);
         setProjectWattsConsumed(wattsConsumed);
-        setprojectValueInvoice(valueInvoice);
-
+        setprojectValueInvoice(invoiceValue);
     }, []);
 
     const projectCostSimulationInt = 0;
     const valueAPR = VALUES_APR.riskProfile5; // Tasa efectiva anual del prestamo el perfil 5 es el de mayo riesgo y tiene un valor de 34% Efectivo anual
     const valueMD = (((1 + valueAPR / 100) ** (1 / 12) - 1) * 100).toFixed(2); // Tasa nominal mes vencido
-    const [stateNumeroCuotas, setNumeroCuotas] = useState({value: 36});
-    const [statePorcentajeCuotaInicial, setPorcentajeCuotaInicial] = useState({value: 10});
+
 
     const valueInsurance = 60000;
     const valueFee = 9000;
     const valueKWP = projectWattsConsumed;
     const valueOthers = 3000;
-    const newSeries = [];
-    const newyaxis = [];
 
-    if (projectCostSimulation) {
+    if (projectCostSimulation) 
         projectCostSimulationInt = parseInt(projectCostSimulation.split(".").join(""));
-    }
+    
+
 
     const handleNumeroCuotasChange = (event) => { // setValuePayment(getPaymentValue(projectCostSimulationInt - (projectCostSimulationInt * statePorcentajeCuotaInicial.value) / 100, stateNumeroCuotas.value, VALUES_APR[4], valueInsurance, valueFee, valueKWP, valueOthers));
         setNumeroCuotas({value: event.target.value});
@@ -64,18 +68,15 @@ const FinancingData = () => {
     };
 
     useEffect(() => {
-        console.log("projectCostSimulationInt");
-        console.log(projectCostSimulationInt);
-        console.log("statePorcentajeCuotaInicial.value");
-        console.log(statePorcentajeCuotaInicial.value);
-
         setValuePayment(getPaymentValue(projectCostSimulationInt - (projectCostSimulationInt * statePorcentajeCuotaInicial.value) / 100, stateNumeroCuotas.value, VALUES_APR[4], valueInsurance, valueFee, valueKWP, valueOthers));
         updateChartData(options, setOptions, stateNumeroCuotas, projectValueInvoice, valuePayment, irrValue, setirrValue, projectCostSimulationInt * (statePorcentajeCuotaInicial.value / 100));
+
     }, [stateNumeroCuotas]);
 
     useEffect(() => {
         setValuePayment(getPaymentValue(projectCostSimulationInt - (projectCostSimulationInt * statePorcentajeCuotaInicial.value) / 100, stateNumeroCuotas.value, VALUES_APR[4], valueInsurance, valueFee, valueKWP, valueOthers));
         updateChartData(options, setOptions, stateNumeroCuotas, projectValueInvoice, valuePayment, irrValue, setirrValue, projectCostSimulationInt * (statePorcentajeCuotaInicial.value / 100));
+
     }, [statePorcentajeCuotaInicial]);
 
     useEffect(() => {
@@ -85,7 +86,6 @@ const FinancingData = () => {
     useEffect(() => {
         setValuePayment(getPaymentValue(projectCostSimulationInt - (projectCostSimulationInt * statePorcentajeCuotaInicial.value) / 100, stateNumeroCuotas.value, VALUES_APR[4], valueInsurance, valueFee, valueKWP, valueOthers));
         updateChartData(options, setOptions, stateNumeroCuotas, projectValueInvoice, valuePayment, irrValue, setirrValue, projectCostSimulationInt * (statePorcentajeCuotaInicial.value / 100));
-
     }, [projectValueInvoice, projectWattsConsumed, projectCostSimulation]);
 
     return (
@@ -111,7 +111,7 @@ const FinancingData = () => {
                             stateNumeroCuotas.value
                         }
                         onChange={handleNumeroCuotasChange}
-                        step="6"/>
+                        step="12"/>
                 </div>
                 <div className="py-2 clearfix">
                     <span className="text-left float-left">
@@ -178,12 +178,7 @@ const FinancingData = () => {
                         )
                     } </div>
                 </div>
-                {/*<div className="text-center">
-                    <input type="submit" className="transition w-min m-auto px-2 py-1 bg-seos-blue-light rounded-md text-white cursor-pointer hover:bg-seos-blue-dark" value="Simular" form="{}"
-                        onClick={handleSubmit}
-                        newSeries={newSeries}
-                        newyaxis={newyaxis}/>
-                </div>*/} </section>
+            </section>
         </section>
     );
 };

@@ -1,13 +1,12 @@
 import {METHODS_OF_SAVING} from 'helpers/texts'
-import {startTransition, useReducer, useRef} from 'react'
-/* import { validateInvoiceValue, validateStratum, validateHoursWhithoutElectricity } from 'helpers/validationsForms' */
+import {startTransition, useReducer, useRef, useEffect} from 'react'
 import SelectInformationCO from 'components/SelectInformationCO'
 import {formSavingReducer, initialStateFormSaving} from 'reducers/formSavingReducer'
 import {TOUCHED_STATES} from 'helpers/states'
 import {TYPES_FORM_SAVING} from 'actions/formSavingActions'
 
 
-const FormSaving = ({goToForm, selectedMethod, setInformationLead}) => {
+const FormSaving = ({goToForm, selectedMethod, informationLead, setInformationLead}) => {
 
     const [state, dispatch] = useReducer(formSavingReducer, initialStateFormSaving)
     const {values, errors, touched} = state
@@ -33,9 +32,11 @@ const FormSaving = ({goToForm, selectedMethod, setInformationLead}) => {
                 newValue = valueWithoutPoint.substring(2, value.length)
             }
 
-            dispatch({type: TYPES_FORM_SAVING.CHANGE_INVOICE_VALUE, payload: `${
+            dispatch({
+                    type: TYPES_FORM_SAVING.CHANGE_INVOICE_VALUE, payload: `${
                     formatMoney.format(newValue)
-                }`})
+                }`
+            })
         }
 
         if (name === 'stratum') {
@@ -105,7 +106,9 @@ const FormSaving = ({goToForm, selectedMethod, setInformationLead}) => {
         if (Object.entries(errors).length !== 0) 
             return
 
+
         
+
 
         if (selectedMethod === METHODS_OF_SAVING.SOLAR) {
             delete values.hours_without_electricity
@@ -142,6 +145,11 @@ const FormSaving = ({goToForm, selectedMethod, setInformationLead}) => {
             setInformationLead(values)
         })
     }
+
+    useEffect(() => {
+        console.log("informationLead inside useEffect");
+        console.log(informationLead);
+    }, [informationLead]);
 
     return (
         <form className='flex flex-col h-full w-80 sm:w-[48%] pr-2 md:px-8 pt-4 pb-7 mr-2 border border-gray rounded-md shadow-md' data-cy="form">

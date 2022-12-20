@@ -70,8 +70,7 @@ const InfoSavingPanel = ({goToForm, setGoToForm, setSelectedMethod}) => {
                     urlImage={Cartagena}
                     setGoToForm={setGoToForm}
                     openModal={openModalSolar}
-                    setSelectedMethod={setSelectedMethod}/>
-                <InformationCard typeOfSaving={
+                    setSelectedMethod={setSelectedMethod}/> {/*<InformationCard typeOfSaving={
                         METHODS_OF_SAVING.SYSTEM_SUPPORT
                     }
                     urlImage={Respaldo}
@@ -84,8 +83,7 @@ const InfoSavingPanel = ({goToForm, setGoToForm, setSelectedMethod}) => {
                     urlImage={Hibrido}
                     setGoToForm={setGoToForm}
                     openModal={openModalSolarAndSupport}
-                    setSelectedMethod={setSelectedMethod}/>
-            </section>
+                setSelectedMethod={setSelectedMethod}/>*/} </section>
         </article>
     )
 }

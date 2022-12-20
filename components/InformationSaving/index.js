@@ -1,22 +1,21 @@
 import {useState, startTransition, useEffect} from "react";
 import {METHODS_OF_SAVING, PRICE_KWH, PROJECT_COST, VALUES_RADIATION} from "helpers/texts";
 
-const getwattage = (selectedMethod, informationLead) => { // * Validate if a solar method or system and solar method
-    if (!(selectedMethod === METHODS_OF_SAVING.SOLAR || selectedMethod === METHODS_OF_SAVING.SUPPORT_SOLAR)) 
-        return null;
-    
+const getwattage = (informationLead) => {
+    // * Validate if a solar method or system and solar method
+    // if (!(selectedMethod === METHODS_OF_SAVING.SOLAR || selectedMethod === METHODS_OF_SAVING.SUPPORT_SOLAR))
+    //    return 0;
 
 
-    if (informationLead === null) 
-        return null;
-    
+    // if (informationLead === null)
+    //    return null;
 
-
-    const stratum = Number(informationLead.stratum);
+    // const stratum = Number(informationLead.stratum);
+    // setStratum(Number(informationLead.stratum));
     const invoice_value_unformat = informationLead.invoice_value.substring(2, informationLead.invoice_value.length).replaceAll(".", "");
 
     // * If the stratum is greatest than four is neccesary
-    const invoice_value = stratum > 4 ? Number(invoice_value_unformat) / 1.2 : Number(invoice_value_unformat);
+    const invoice_value = Number(informationLead.stratum) > 4 ? Number(invoice_value_unformat) / 1.2 : Number(invoice_value_unformat);
 
     // * Get the value of the radiation depending on the department
     const value_radiation = VALUES_RADIATION.find((department) => department.department === informationLead.department);
@@ -34,33 +33,29 @@ const getwattage = (selectedMethod, informationLead) => { // * Validate if a sol
 
     let wattageToDisplay = Math.floor(wattage);
 
-    if (decimalPartWattage < 0.5) {
+    if (decimalPartWattage < 0.5) 
         wattageToDisplay = wattageToDisplay + 0.5;
-    } else {
+     else 
         wattageToDisplay = wattageToDisplay + 1;
-    }
+    
+
 
     return wattageToDisplay;
 };
 
 // * Get the total cost of the project
 const getProjectCost = (selectedMethod, wattage) => {
-    if (!(selectedMethod === METHODS_OF_SAVING.SOLAR || selectedMethod === METHODS_OF_SAVING.SUPPORT_SOLAR)) 
-        return;
-    
-
-
-    if (wattage === null) 
-        return;
-    
-
+    // if (!(selectedMethod === METHODS_OF_SAVING.SOLAR || selectedMethod === METHODS_OF_SAVING.SUPPORT_SOLAR))
+    //    return;
+    // if (wattage === null)
+    //    return;
 
     let entireWattage = Math.ceil(wattage);
 
     // * Get the cost of the project
     const costProject = PROJECT_COST.filter((costPertWattage) => costPertWattage.wattage === entireWattage);
     const cb = document.querySelector("#rural");
-    // console.log(cb.checked);
+
     if (cb.checked) {
         return Math.ceil(costProject[0].value2 / 100000) * 100000;
     } else {
@@ -68,14 +63,14 @@ const getProjectCost = (selectedMethod, wattage) => {
     }
 };
 
+
 const getSaving = (wattageToDisplay, informationLead) => {
-    if (informationLead === null) 
-        return;
-    
+    // if (informationLead === null)
+    //    return;
 
 
     let monthly_saving;
-    const stratum = Number(informationLead.stratum);
+    // setStratum(Number(informationLead.stratum));
     // * Get the value of the radiation depending on the department
     const value_radiation = VALUES_RADIATION.find((department) => department.department === informationLead.department);
 
@@ -129,7 +124,10 @@ const getCostBatteries = (selectedMethod, numberOfLuzioles) => {
 
     return Math.ceil((numberOfLuzioles * 20000000) / 100000) * 100000;
 };
-
+const cost = 0;
+const valueBatteries = 0;
+const wattageToDisplay = 0;
+const invoice_value_unformat = 0;
 const InformationSaving = ({informationLead, selectedMethod, buttonZendesk, setButtonZendesk}) => { // * Actualizar formulas
 
     const [isLowerOfTheNecessaryValue, setIsLowerOfTheNecessaryValue] = useState(false);
@@ -138,34 +136,32 @@ const InformationSaving = ({informationLead, selectedMethod, buttonZendesk, setB
     const [projectCost, setProjectCost] = useState(null);
     const [luzioles, setLuzioles] = useState(null);
     const [costBatteries, setCostBatteries] = useState("");
-    const [invoice_value_unformat, setinvoice_value_unformat] = useState(null);
+    const [stratum, setStratum] = useState(6);
 
     useEffect(() => {
-
         if (informationLead === null) 
             return;
         
 
+        invoice_value_unformat = informationLead.invoice_value.substring(2, informationLead.invoice_value.length).replaceAll(".", "");
 
-        setinvoice_value_unformat(informationLead.invoice_value.substring(2, informationLead.invoice_value.length).replaceAll(".", ""));
+        setStratum(Number(informationLead.stratum));
         if (Number(invoice_value_unformat) <= 125000) {
             setIsLowerOfTheNecessaryValue(true);
             return;
         } else {
             setIsLowerOfTheNecessaryValue(false);
-        }
-
-        const wattageToDisplay = getwattage(selectedMethod, informationLead);
+        } wattageToDisplay = getwattage(informationLead);
 
         if (wattageToDisplay > 10) {
             setWattage(wattageToDisplay ?. toString());
             return;
         }
 
-        const cost = getProjectCost(selectedMethod, wattageToDisplay);
+        cost = getProjectCost(selectedMethod, wattageToDisplay);
         const savingOfTheProject = getSaving(wattageToDisplay, informationLead, cost) ?. toString();
         const numberOfLuzioles = getNumberOfBatteries(selectedMethod, informationLead) ?. toString();
-        const valueBatteries = getCostBatteries(selectedMethod, numberOfLuzioles) ?. toString();
+        valueBatteries = getCostBatteries(selectedMethod, numberOfLuzioles) ?. toString();
 
         // * Format the cost with local format
         const costWithFormat = new Intl.NumberFormat("es-CO").format(cost);
@@ -177,7 +173,8 @@ const InformationSaving = ({informationLead, selectedMethod, buttonZendesk, setB
         setProjectCost(costWithFormat);
         setLuzioles(numberOfLuzioles);
         setCostBatteries(valueBatteriesWithFormat);
-    }, [informationLead, projectCost]);
+
+    }, [informationLead]);
 
     // ! This method only works because in the entire page only have two iframes tags, if a third iframe tag is addes the update
     // ! the method
@@ -196,25 +193,41 @@ const InformationSaving = ({informationLead, selectedMethod, buttonZendesk, setB
         }, 3000);
     };
 
-    const handleSubmit1 = (event) => {
+    const handleSubmit1 = () => {
         window.location.href = "https://api.whatsapp.com/send?phone=573103865380&text=Mi proyecto aún no es rentable, mi correo electrónico es: ";
     };
 
-    const handleSubmit2 = (event) => {
+    const handleSubmit2 = () => {
         window.location.href = "https://api.whatsapp.com/send?phone=573103865380&text=Mi proyecto excede los 10 kWp, ¿me podrían ayudar con una asesoría al respecto?";
     };
 
-    const handleSubmit3 = (event) => {
+    const handleSubmit3 = () => {
         window.location.href = "https://api.whatsapp.com/send?phone=573103865380&text=Estoy interesado en un sistema para olvidarme de los cortes de energía. 🔋";
     };
 
-    const handleSubmit4 = (event) => {
-        window.location.href = "http://localhost:3000/financiacion?value=" + projectCost + "&value2=" + wattage + "&value3=" + invoice_value_unformat;
+    const handleSubmit4 = () => {
+        if (cost == undefined || cost == NaN || cost == "0") 
+            cost = 0;
+        
+
+
+        if (valueBatteries == undefined || valueBatteries == NaN || valueBatteries == "0") 
+            valueBatteries = 0;
+        
+
+
+        if (selectedMethod === METHODS_OF_SAVING.SYSTEM_SUPPORT) 
+            cost = 0;
+        
+
+
+        const projectCostValue = Number(cost) + Number(valueBatteries);
+        window.location.href = "/financiacion?ProjectCost=" + Number(projectCostValue) + "&Kwp=" + Number(wattageToDisplay) + "&invoiceValue=" + Number(invoice_value_unformat) + "&Method=" + selectedMethod + "&SEStatus=" + stratum;
     };
 
     if (!informationLead) {
         return (
-            <article className="w-80 grow sm:w-[48%] md:px-8 ml-2 h-full py-4 border border-gray rounded-md shadow-md">
+            <article className="w-80 grow sm:w-[48%] md:px-8 ml-2 h     -full py-4 border border-gray rounded-md shadow-md">
                 Llena el fomulario y dale al boton{" "}
                 <p className="inline font-semibold">Confirmar datos</p>
             </article>
@@ -225,13 +238,13 @@ const InformationSaving = ({informationLead, selectedMethod, buttonZendesk, setB
         return (
             <article className="w-80 sm:w-[48%] md:px-8 ml-2 h-full py-4 border border-gray rounded-md shadow-md">
                 Gracias por compartir con nosotros tú información. Con estos datos,
-                                                                                                                                                                                                                                                                                                                                                                                consideramos que el costo y el tiempo de amortización no son tan
-                                                                                                                                                                                                                                                                                                                                                                                rentables aún, especialmente por el costo de los equipos principales.
-                                                                                                                                                                                                                                                                                                                                                                                ¡Pero no te preocupes! Estos sistemas han bajado más del 97% en los
-                                                                                                                                                                                                                                                                                                                                                                                anteriores 10 años, por lo que pensamos que ya estamos cerca de poder
-                                                                                                                                                                                                                                                                                                                                                                                atenderte. Te invitamos a compartir con nosotros tu correo y seguirnos
-                                                                                                                                                                                                                                                                                                                                                                                en redes sociales para identificar el mejor momento para volver a
-                                                                                                                                                                                                                                                                                                                                                                                revisar. ¡Gracias!
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                consideramos que el costo y el tiempo de amortización no son tan
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                rentables aún, especialmente por el costo de los equipos principales.
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                ¡Pero no te preocupes! Estos sistemas han bajado más del 97% en los
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                anteriores 10 años, por lo que pensamos que ya estamos cerca de poder
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                atenderte. Te invitamos a compartir con nosotros tu correo y seguirnos
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                en redes sociales para identificar el mejor momento para volver a
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                revisar. ¡Gracias!
                 <div class="text-center">
                     <input type="submit" className="transition w-min m-auto px-2 py-1 bg-seos-blue-light rounded-md text-white cursor-pointer hover:bg-seos-blue-dark" value="Contáctanos" form="{}"
                         onClick={handleSubmit1}/>
@@ -244,7 +257,7 @@ const InformationSaving = ({informationLead, selectedMethod, buttonZendesk, setB
         return (
             <article className="w-80 sm:w-[48%] md:px-8 ml-2 h-full py-4 border border-gray rounded-md shadow-md">
                 La potencia de tu proyecto excede los 10 kWp, contáctate con uno de
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        nuestros asesores por medio del botón de WhatsApp a continuación.
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        nuestros asesores por medio del botón de WhatsApp a continuación.
                 <div class="text-center">
                     <input type="submit" className="transition w-min m-auto px-2 py-1 bg-seos-blue-light rounded-md text-white cursor-pointer hover:bg-seos-blue-dark" value="Contáctanos" form="{}"
                         onClick={handleSubmit2}/>
@@ -357,7 +370,7 @@ const InformationSaving = ({informationLead, selectedMethod, buttonZendesk, setB
             }
                 <p className="text-justify py-2">
                     Estos valores son de referencia y podrán variar con base en la visita
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              técnica que se realizará como parte del proyecto.{" "} </p>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              técnica que se realizará como parte del proyecto.{" "} </p>
                 <div class="text-center">
                     {/*<input
             type="submit"
@@ -367,7 +380,6 @@ const InformationSaving = ({informationLead, selectedMethod, buttonZendesk, setB
             onClick={handleSubmit3}
           />*/}
                     <input type="submit" className="transition w-min m-auto px-2 py-1 bg-seos-blue-light rounded-md text-white cursor-pointer hover:bg-seos-blue-dark" value="Y si lo financio?" form="{}"
-                        projectCost={projectCost}
                         onClick={handleSubmit4}/>
                 </div>
             </section>

@@ -419,18 +419,13 @@ const computeIRR = (cf, numOfFlows, projectInitialCost) => {
     cfTemp.push(...cf);
     cfTemp[0] = cf[0] - projectInitialCost;
 
-    console.log("projectInitialCost");
-    console.log(projectInitialCost);
-    console.log("cfTemp");
-    console.log(cfTemp);
+
     for (i = 0; i < MAX_ITERATION; i++) {
         npv = 0.00;
         for (j = 0; j < numOfFlows; j++) {
             denom = Math.pow((1 + guessRate), j);
             npv = npv + (cfTemp[j] / denom);
         }
-        // console.log("npv2");
-        // console.log(npv);
         /* Stop checking once the required precision is achieved */
         if ((npv > 0) && (npv < PRECISION_REQ)) 
             break;
@@ -502,7 +497,6 @@ const updateChartData = (options, setOptions, stateNumeroCuotas, projectValueInv
 
                 } else {
                     if ((stateNumeroCuotas.value % 12) && ! flag) {
-                        console.log("FLAG INCREASE");
                         flag++;
                         yValue = Math.floor(868 * (1 + 0.05989721558) ** (index - 20) * (projectValueInvoice / 868) - valuePayment / 2);
                     } else {
@@ -530,8 +524,9 @@ const updateChartData = (options, setOptions, stateNumeroCuotas, projectValueInv
             }
         },
         show: true,
-        min: Math.round(Math.min(... yaxisValues) / 100000) * 100000,
-        max: Math.round(Math.max(... yaxisValues) / 100000) * 100000
+
+        min: Math.round(Math.min(... yaxisValues) / 100000) * 110000,
+        max: Math.round(Math.max(... yaxisValues) / 100000) * 110000
     })
     irrValue = computeIRR(cfValues, cfValues.length, projectInitialCost);
     setirrValue(irrValue);
