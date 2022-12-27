@@ -53,58 +53,58 @@ export const PRICE_KWH = [
 
 export const PROJECT_COST = [
     {
-        wattage: 2,
+        wattage: 3,
         value: 18942466,
         value2: 19720466
     },
     {
-        wattage: 3,
+        wattage: 4,
         value: 23024999,
         value2: 23992002
     },
     {
-        wattage: 4,
+        wattage: 5,
         value: 27043533,
         value2: 28136533
     },
     {
-        wattage: 5,
+        wattage: 6,
         value: 29506944,
         value2: 30725943
     }, {
-        wattage: 6,
+        wattage: 7,
         value: 33579677,
         value2: 34924676
     }, {
-        wattage: 7,
+        wattage: 8,
         value: 38807789,
         value2: 40341791
     }, {
-        wattage: 8,
+        wattage: 9,
         value: 39420000,
         value2: 41029597
     }, {
-        wattage: 9,
+        wattage: 10,
         value: 44000000,
         value2: 45800000
     }, {
-        wattage: 10,
+        wattage: 11,
         value: 51600000,
         value2: 53679996
     }, {
-        wattage: 11,
+        wattage: 12,
         value: 58800000,
         value2: 61159994
     }, {
-        wattage: 12,
+        wattage: 13,
         value: 65600000,
         value2: 68240000
     }, {
-        wattage: 13,
+        wattage: 14,
         value: 72900000,
         value2: 75819996
     }, {
-        wattage: 14,
+        wattage: 15,
         value: 80000000,
         value2: 83200000
     },

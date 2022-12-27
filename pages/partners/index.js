@@ -183,8 +183,8 @@ const Partners = () => {
                 <article className="grow flex items-center">
                     <p className="w-2/4 h-min py-7 px-4 m-auto text-center font-semibold bg-slay-bg">
                         Hemos encontrado un usuario con el mismo número de NIT, por favor
-                                    verifica tus datos, si tu problema persiste por favor contacta
-                                    soporte técnico
+                                                verifica tus datos, si tu problema persiste por favor contacta
+                                                soporte técnico
                     </p>
                 </article>
             </section>

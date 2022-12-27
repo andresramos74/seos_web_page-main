@@ -1,6 +1,6 @@
-import { gql } from '@apollo/client'
+import {gql} from '@apollo/client'
 
-export const DELETE_TTL = gql`
+export const DELETE_TTL = gql `
 
   mutation DeleteTtl($nit: String!) {
     deleteTtl(nit: $nit){

@@ -2,6 +2,6 @@
   "/_app": "pages/_app.js",
   "/_error": "pages/_error.js",
   "/_document": "pages/_document.js",
-  "/financiacion": "pages/financiacion.js",
-  "/ahorro": "pages/ahorro.js"
+  "/ahorro": "pages/ahorro.js",
+  "/csignin": "pages/csignin.js"
 }
